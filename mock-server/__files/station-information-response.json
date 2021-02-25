@@ -1,0 +1,56 @@
+{
+  "data": {
+    "stations": [
+      {
+        "rental_methods": [
+          "KEY",
+          "CREDITCARD"
+        ],
+        "station_id": "72",
+        "name": "W 52 St & 11 Ave",
+        "has_kiosk": true,
+        "lat": 40.76727216,
+        "region_id": "71",
+        "external_id": "66db237e-0aca-11e7-82f6-3863bb44ef7c",
+        "lon": -73.99392888,
+        "eightd_station_services": [],
+        "capacity": 55,
+        "station_type": "classic",
+        "electric_bike_surcharge_waiver": false,
+        "legacy_id": "72",
+        "eightd_has_key_dispenser": false,
+        "short_name": "6926.01",
+        "rental_uris": {
+          "android": "https://bkn.lft.to/lastmile_qr_scan",
+          "ios": "https://bkn.lft.to/lastmile_qr_scan"
+        }
+      },
+      {
+        "rental_methods": [
+          "KEY",
+          "CREDITCARD"
+        ],
+        "station_id": "79",
+        "name": "Franklin St & W Broadway",
+        "has_kiosk": true,
+        "lat": 40.71911552,
+        "region_id": "71",
+        "external_id": "66db269c-0aca-11e7-82f6-3863bb44ef7c",
+        "lon": -74.00666661,
+        "eightd_station_services": [],
+        "capacity": 33,
+        "station_type": "classic",
+        "electric_bike_surcharge_waiver": false,
+        "legacy_id": "79",
+        "eightd_has_key_dispenser": false,
+        "short_name": "5430.08",
+        "rental_uris": {
+          "android": "https://bkn.lft.to/lastmile_qr_scan",
+          "ios": "https://bkn.lft.to/lastmile_qr_scan"
+        }
+      }
+    ]
+  },
+  "last_updated": 1614255845,
+  "ttl": 5
+}
