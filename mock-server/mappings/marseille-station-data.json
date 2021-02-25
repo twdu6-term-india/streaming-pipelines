@@ -1,0 +1,14 @@
+{
+  "priority": 1,
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/v2/networks/le-velo"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "station-information-response.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

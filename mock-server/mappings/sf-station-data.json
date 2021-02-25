@@ -1,0 +1,14 @@
+{
+  "priority": 1,
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/v2/networks/ford-gobike"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "sf-station-data-response.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

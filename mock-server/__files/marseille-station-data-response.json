@@ -1,0 +1,58 @@
+{
+  "network": {
+    "company": [
+      "JCDecaux"
+    ],
+    "href": "/v2/networks/le-velo",
+    "id": "le-velo",
+    "license": {
+      "name": "Open Licence",
+      "url": "https://developer.jcdecaux.com/#/opendata/licence"
+    },
+    "location": {
+      "city": "Marseille",
+      "country": "FR",
+      "latitude": 43.296482,
+      "longitude": 5.36978
+    },
+    "name": "Le vélo",
+    "source": "https://developer.jcdecaux.com",
+    "stations": [{
+      "empty_slots": 9,
+      "extra": {
+        "address": "391 MICHELET - 391 BOULEVARD MICHELET",
+        "banking": true,
+        "bonus": false,
+        "last_update": 1614257741000,
+        "slots": 19,
+        "status": "OPEN",
+        "uid": 8149
+      },
+      "free_bikes": 10,
+      "id": "france-station-1",
+      "latitude": 43.25402727813068,
+      "longitude": 5.401873594694653,
+      "name": "8149-391 MICHELET",
+      "timestamp": "2021-02-25T12:59:33.907000Z"
+    },
+      {
+        "empty_slots": 2,
+        "extra": {
+          "address": "TEISSEIRE ROUBAUD - ANGLE RUE RAYMOND TEISSEIRE ET RUE MAGUY ROUBAUD",
+          "banking": true,
+          "bonus": false,
+          "last_update": 1614257894000,
+          "slots": 10,
+          "status": "OPEN",
+          "uid": 9207
+        },
+        "free_bikes": 7,
+        "id": "france-station-2",
+        "latitude": 43.27252367086013,
+        "longitude": 5.399686062414487,
+        "name": "9207- TEISSEIRE - ROUBAUD",
+        "timestamp": "2021-02-25T12:59:33.909000Z"
+      }
+    ]
+  }
+}
