@@ -1,0 +1,14 @@
+{
+  "priority": 1,
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/gbfs/en/station_information.json"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "station-information-response.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
