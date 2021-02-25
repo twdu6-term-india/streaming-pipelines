@@ -6,7 +6,7 @@
   },
   "response": {
     "status": 200,
-    "bodyFileName": "station-information-response.json",
+    "bodyFileName": "marseille-station-data-response.json",
     "headers": {
       "Content-Type": "application/json"
     }
