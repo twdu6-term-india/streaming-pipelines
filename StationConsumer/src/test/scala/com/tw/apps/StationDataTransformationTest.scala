@@ -111,7 +111,8 @@ class StationDataTransformationTest extends FeatureSpec with Matchers with Given
                    ]
                 }
              }
-          }""".stripMargin
+          }"""
+
 
       Given("Sample data for station status")
       val testDF1 = Seq(testMarseilleStationData).toDF("raw_payload")
@@ -140,15 +141,15 @@ class StationDataTransformationTest extends FeatureSpec with Matchers with Given
       resultDF1.schema.fields(8).dataType.typeName should be("double")
 
       val row1 = resultDF1.head()
-//      row1.get(0) should be(10)
-//      row1.get(1) should be(5)
-//      row1.get(2) shouldBe true
-//      row1.get(3) shouldBe true
-//     row1.get(4) should be(1614285558)
-//      row1.get(5) should be("abcs12312")
-//      row1.get(6) should be("3320 - BELLE DE MAI CADENAT")
-//      row1.get(7) should be(43.31181964585524)
-//      row1.get(8) should be(5.387375678428276)
+      row1.get(0) should be(10)
+      row1.get(1) should be(5)
+      row1.get(2) shouldBe true
+      row1.get(3) shouldBe true
+      row1.get(4) should be(1614242358)
+      row1.get(5) should be("abcs12312")
+      row1.get(6) should be("3320 - BELLE DE MAI CADENAT")
+      row1.get(7) should be(43.31181964585524)
+      row1.get(8) should be(5.387375678428276)
 
     }
 
