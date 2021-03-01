@@ -108,6 +108,15 @@ EOF
 
 echo "====HDFS paths configured==="
 
+echo "====Config Custom metric publisher ===="
+scp ./sbin/publishCustomMetricToCloudWatch.sh emr-master.${TRAINING_COHORT}.training:/tmp/publishCustomMetricToCloudWatch.sh
+
+ssh emr-master.${TRAINING_COHORT}.training <<EOF
+echo "*/5 * * * * /tmp/publishCustomMetricToCloudWatch.sh  --from-cron" | crontab
+EOF
+
+echo "==== Custom metric publisher configured ==="
+
 
 echo "====Copy Raw Data Saver Jar to EMR===="
 scp RawDataSaver/target/scala-2.11/tw-raw-data-saver_2.11-0.0.1.jar emr-master.${TRAINING_COHORT}.training:/tmp/
