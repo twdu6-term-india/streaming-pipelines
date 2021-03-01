@@ -112,6 +112,7 @@ echo "====Config Custom metric publisher ===="
 scp ./sbin/publishCustomMetricToCloudWatch.sh emr-master.${TRAINING_COHORT}.training:/tmp/publishCustomMetricToCloudWatch.sh
 
 ssh emr-master.${TRAINING_COHORT}.training <<EOF
+chmod +x /tmp/publishCustomMetricToCloudWatch.sh
 echo "*/5 * * * * /tmp/publishCustomMetricToCloudWatch.sh  --from-cron" | crontab
 EOF
 
