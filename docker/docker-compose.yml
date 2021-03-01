@@ -105,6 +105,8 @@ services:
           - ~/.ivy2:/root/.ivy2:rw
         networks:
           - streaming-data-internal
+        ports:
+          - "4041:4040"
         restart: on-failure
 
     raw-station-status-data-saver:
@@ -123,6 +125,8 @@ services:
         networks:
           - streaming-data-internal
         restart: on-failure
+        ports:
+          - "4042:4040"
 
     raw-station-data-san-francisco-saver:
         build:
@@ -140,6 +144,8 @@ services:
         networks:
           - streaming-data-internal
         restart: on-failure
+        ports:
+          - "4043:4040"
 
     station-consumer:
         build:
@@ -156,6 +162,8 @@ services:
         networks:
           - streaming-data-internal
         restart: on-failure
+        ports:
+          - "4044:4040"
 
     station-transformer-nyc:
         build:
@@ -172,6 +180,8 @@ services:
         networks:
           - streaming-data-internal
         restart: on-failure
+        ports:
+          - "4045:4040"
 
 networks:
     streaming-data-internal:
