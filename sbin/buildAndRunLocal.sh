@@ -9,5 +9,5 @@ cd $DIR/../RawDataSaver && sbt package
 cd $DIR/../StationConsumer && sbt package
 cd $DIR/../StationTransformerNYC && sbt package
 echo "====Running docker-compose===="
-$DIR/../docker/docker-compose.sh --project-directory $DIR/../docker -f $DIR/../docker/docker-compose.yml up --build -d
+$DIR/../docker/docker-compose.sh --project-directory $DIR/../docker -f $DIR/../docker/docker-compose.yml up --build
 
