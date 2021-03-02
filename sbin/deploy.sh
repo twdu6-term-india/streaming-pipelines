@@ -62,30 +62,14 @@ echo "====Jar copied to ingester server===="
 ssh ingester.${TRAINING_COHORT}.training <<EOF
 set -e
 
-function kill_process {
-    query=\$1
-    pid=`ps aux | grep \$query | grep -v "grep" |  awk "{print \\\$2}"`
-
-    if [ -z "\$pid" ];
-    then
-        echo "no \${query} process running"
-    else
-        kill -9 \$pid
-    fi
-}
-
 station_information="station-information"
 station_status="station-status"
 station_san_francisco="station-san-francisco"
 station_marseille="station-marseille"
 
 
-echo "====Kill running producers===="
-
-kill_process \${station_information}
-kill_process \${station_status}
-kill_process \${station_san_francisco}
-kill_process \${station_marseille}
+echo "====Kill all running producers with specified jar===="
+kill $(pgrep -f 'java .*tw-citibike-apis-producer0.1.0.jar')
 
 echo "====Runing Producers Killed===="
 
