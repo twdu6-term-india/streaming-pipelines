@@ -61,31 +61,13 @@ echo "====Jar copied to ingester server===="
 
 ssh ingester.${TRAINING_COHORT}.training <<EOF
 set -e
-
-function kill_process {
-    query=\$1
-    pid=`ps aux | grep \$query | grep -v "grep" |  awk "{print \\\$2}"`
-
-    if [ -z "\$pid" ];
-    then
-        echo "no \${query} process running"
-    else
-        kill -9 \$pid
-    fi
-}
-
 station_information="station-information"
 station_status="station-status"
 station_san_francisco="station-san-francisco"
 
 
-echo "====Kill running producers===="
-
-kill_process \${station_information}
-kill_process \${station_status}
-kill_process \${station_san_francisco}
-
-echo "====Runing Producers Killed===="
+echo "====Kill all running producers with specified jar===="
+kill $(pgrep -f 'java .*tw-citibike-apis-producer0.1.0.jar')
 
 echo "====Deploy Producers===="
 nohup java -jar /tmp/tw-citibike-apis-producer0.1.0.jar --spring.profiles.active=\${station_information} --kafka.brokers=kafka.${TRAINING_COHORT}.training:9092 1>/tmp/\${station_information}.log 2>/tmp/\${station_information}.error.log &
