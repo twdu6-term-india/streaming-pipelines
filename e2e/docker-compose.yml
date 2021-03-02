@@ -50,8 +50,6 @@ services:
       - hadoop
     restart: on-failure
 
-
-
   station-information-producer:
     build:
       context: ..
@@ -187,6 +185,28 @@ services:
     restart: on-failure
     ports:
       - "9991:9991"
+
+  e2e-test:
+    build:
+      context: .
+      dockerfile: Dockerfile-e2e-test
+    networks:
+      - streaming-data-e2e
+    restart: on-failure
+    container_name: e2e-test
+    depends_on:
+      - zookeeper-seed
+      - hadoop-seed
+      - kafka
+      - station-information-producer
+      - station-status-producer
+      - station-san-francisco-producer
+      - raw-station-information-data-saver
+      - raw-station-status-data-saver
+      - raw-station-data-san-francisco-saver
+      - station-transformer-nyc
+      - station-consumer
+#    command: ["./wait-for.sh", "http://hadoop:50070/explorer.html#/tw/stationMart/data", "-t", "0"]
 
 networks:
   streaming-data-e2e:

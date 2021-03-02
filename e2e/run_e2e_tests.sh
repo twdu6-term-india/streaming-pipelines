@@ -11,6 +11,6 @@ cd $DIR/../StationTransformerNYC && sbt package
 echo "====Running docker-compose===="
 docker-compose --project-name=streamingdatapipelinee2e \
  --project-directory $DIR -f $DIR/docker-compose.yml up --build -d
-#sbt test
+#docker logs e2e-test
 #clean task
 #docker rm -f $(docker ps -a | grep streamingdatapipelinee2e | awk '{print $1}')
