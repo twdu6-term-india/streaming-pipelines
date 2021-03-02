@@ -62,8 +62,14 @@ echo "====Jar copied to ingester server===="
 ssh ingester.${TRAINING_COHORT}.training <<EOF
 set -e
 
-function kill_process {
-    kill $(pgrep -f 'java .*tw-citibike-apis-producer0.1.0.jar')
+ function kill_process {
+    pid=\$(pgrep -f "java .*tw-citibike-apis-producer0.1.0.jar")
+    for i in "\${pid[@]}"
+    do
+       echo \$1
+       kill -9 \$i
+    done
+
 }
 
 station_information="station-information"
