@@ -51,7 +51,7 @@ object StationApp {
       .option("startingOffsets", "latest")
       .load()
       .selectExpr("CAST(value AS STRING) as raw_payload")
-      .transform(sfStationStatusJson2DF(_, spark))
+      .transform(stationStatusJson2DF(_, spark))
 
     val marseilleStationDF = spark.readStream
       .format("kafka")
@@ -60,7 +60,7 @@ object StationApp {
       .option("startingOffsets", "latest")
       .load()
       .selectExpr("CAST(value AS STRING) as raw_payload")
-      .transform(marseilleStationStatusJson2DF(_, spark))
+        .transform(stationStatusJson2DF(_, spark))
 
     nycStationDF
       .union(sfStationDF)
