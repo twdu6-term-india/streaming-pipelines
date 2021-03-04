@@ -133,6 +133,7 @@ echo "====Kill Old Raw Data Saver===="
 kill_application "StationStatusSaverApp"
 kill_application "StationInformationSaverApp"
 kill_application "StationDataSFSaverApp"
+kill_application "StationDataMarseilleSaverApp"
 
 echo "====Old Raw Data Saver Killed===="
 
