@@ -14,13 +14,17 @@ class EndToEndSpec extends FeatureSpec with Matchers with GivenWhenThen {
     import spark.implicits._
 
     scenario("should write correct station data to station mart") {
+
+      Given("station mart contains output file")
       val df2 = spark.read
         .option("header", true)
         .csv("hdfs://hadoop:9000/tw/stationMart/data")
 
-//      spark.readStream
-      //wait for file to be present
-      df2.show(10)
+
+      Then("csv file in station mart should contain valid station data")
+
+      df2.count() should be (4)
+
     }
   }
 }
