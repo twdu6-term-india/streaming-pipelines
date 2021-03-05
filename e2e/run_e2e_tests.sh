@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+function cleanup() {
+  docker logs e2e-test
+  docker rm -f $(docker ps -a | grep streamingdatapipelinee2e | awk '{print $1}')
+}
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo "====Building Producer JARs===="
@@ -9,8 +14,11 @@ cd $DIR/../RawDataSaver && sbt package
 cd $DIR/../StationConsumer && sbt package
 cd $DIR/../StationTransformerNYC && sbt package
 echo "====Running docker-compose===="
+
 docker-compose --project-name=streamingdatapipelinee2e \
  --project-directory $DIR -f $DIR/docker-compose.yml up --build -d
-#docker logs e2e-test
-#clean task
-#docker rm -f $(docker ps -a | grep streamingdatapipelinee2e | awk '{print $1}')
+
+echo "====Waiting for results from e2e-test===="
+docker wait e2e-test
+
+trap cleanup EXIT
