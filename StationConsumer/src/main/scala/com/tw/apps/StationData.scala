@@ -9,7 +9,7 @@ case class StationData(
                         station_id: Option[String],
                         name: Option[String],
                         latitude: Option[Double],
-                        longitude: Option[Double],
+                        longitude: Option[Double]
                       ) {
 
 
