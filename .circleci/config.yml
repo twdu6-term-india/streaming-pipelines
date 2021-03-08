@@ -47,6 +47,15 @@ jobs:
             - run:
                 command: ./sbin/deploy.sh $BASTION_PUBLIC_IP $TRAINING_COHORT
 
+    e2e:
+        <<: *defaults
+        steps:
+            - checkout
+            - setup_remote_docker:
+                docker_layer_caching: true
+            - run:
+                command: ./e2e/run_e2e_tests.sh
+
 workflows:
     version: 2
     build_and_deploy:
@@ -64,4 +73,22 @@ workflows:
             - deploy:
                 requires:
                     - approve-deploy
+
+
+    nightly-test:
+        triggers:
+            - schedule:
+                cron: "0 * * * *"
+                filters:
+                      branches:
+                          only:
+                              - master
+        jobs:
+            - approve-e2e:
+                  type: approval
+            - e2e:
+                  requires:
+                      - approve-e2e
+
+
 
