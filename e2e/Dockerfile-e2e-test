@@ -1,4 +1,4 @@
 FROM ryandjf/docker-spark
 COPY . /e2e/
 WORKDIR /e2e
-ENTRYPOINT sbt test
+ENTRYPOINT ["sh", "./run_test.sh"]

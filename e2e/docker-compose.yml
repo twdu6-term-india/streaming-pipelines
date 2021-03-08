@@ -83,16 +83,16 @@ services:
     networks:
       - streaming-data-e2e
 
-#  station-france-producer:
-#    build:
-#      context: ..
-#      dockerfile: e2e/Dockerfile-e2e-station-france
-#    depends_on:
-#      - kafka
-#      - zookeeper-seed
-#      - mock-server
-#    networks:
-#      - streaming-data-e2e
+  station-marseille-producer:
+    build:
+      context: ..
+      dockerfile: e2e/Dockerfile-e2e-station-marseille
+    depends_on:
+      - kafka
+      - zookeeper-seed
+      - mock-server
+    networks:
+      - streaming-data-e2e
 
   raw-station-information-data-saver:
     build:
