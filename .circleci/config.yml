@@ -75,7 +75,7 @@ workflows:
                     - approve-deploy
 
 
-    nightly-test:
+    hourly-test:
         triggers:
             - schedule:
                 cron: "0 * * * *"
