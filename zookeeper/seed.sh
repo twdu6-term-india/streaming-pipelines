@@ -34,3 +34,8 @@ $zk_command create /tw/stationDataMarseille/dataLocation hdfs://$hdfs_server/tw/
 $zk_command create /tw/output ''
 $zk_command create /tw/output/checkpointLocation hdfs://$hdfs_server/tw/stationMart/checkpointsLocation
 $zk_command create /tw/output/dataLocation hdfs://$hdfs_server/tw/stationMart/data
+
+$zk_command create /tw/errorOutput ''
+$zk_command create /tw/errorOutput/stationMart ''
+$zk_command create /tw/errorOutput/stationMart/checkpointLocation hdfs://$hdfs_server/tw/error/stationMart/checkpoints
+$zk_command create /tw/errorOutput/stationMart/error hdfs://$hdfs_server/tw/error/stationMart/data
