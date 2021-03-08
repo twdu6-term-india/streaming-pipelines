@@ -1,9 +1,11 @@
 package com.tw.apps
 
-import StationDataTransformation.{stationStatusJson2DF, nycStationStatusJson2DF}
+import StationDataTransformation.{nycStationStatusJson2DF, stationStatusJson2DF}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.ScalaReflection
 import org.scalatest._
+
+import scala.None
 
 class StationDataTransformationTest extends FeatureSpec with Matchers with GivenWhenThen {
 

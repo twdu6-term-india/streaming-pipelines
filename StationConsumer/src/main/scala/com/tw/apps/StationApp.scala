@@ -3,6 +3,7 @@ package com.tw.apps
 import StationDataTransformation._
 import org.apache.curator.framework.CuratorFrameworkFactory
 import org.apache.curator.retry.ExponentialBackoffRetry
+import org.apache.spark.sql.functions.{current_date, date_format}
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object StationApp {
@@ -21,6 +22,9 @@ object StationApp {
     val marseilleStationTopic = new String(zkClient.getData.watched.forPath("/tw/stationDataMarseille/topic"))
     val checkpointLocation = new String(zkClient.getData.watched.forPath("/tw/output/checkpointLocation"))
     val outputLocation = new String(zkClient.getData.watched.forPath("/tw/output/dataLocation"))
+
+    val errorCheckpointLocation = new String(zkClient.getData.watched.forPath("/tw/errorOutput/stationMart/checkpointLocation"))
+    val errorLocation = new String(zkClient.getData.watched.forPath("/tw/errorOutput/stationMart/error"))
 
     val spark = SparkSession.builder
       .appName("StationConsumer")
@@ -42,10 +46,13 @@ object StationApp {
     val sfStationDF = createStreamTransformer(stationKafkaBrokers, sfStationTopic, stationStatusJson2DF)
     val marseilleStationDF = createStreamTransformer(stationKafkaBrokers, marseilleStationTopic, stationStatusJson2DF)
 
-    nycStationDF
+    val aggregatedStreams = nycStationDF
       .union(sfStationDF)
       .union(marseilleStationDF)
       .as[StationData]
+
+    aggregatedStreams
+      .filter(x => x.isValid)
       .groupByKey(r => r.station_id)
       .reduceGroups((r1, r2) => if (r1.last_updated > r2.last_updated) r1 else r2)
       .map(_._2)
@@ -57,7 +64,20 @@ object StationApp {
       .option("checkpointLocation", checkpointLocation)
       .option("path", outputLocation)
       .start()
-      .awaitTermination()
+
+    aggregatedStreams
+      .filter(x => !x.isValid)
+      .withColumn("date", date_format(current_date(), "yyyy-MM-dd"))
+      .writeStream
+      .partitionBy("date")
+      .outputMode("append")
+      .option("header", true)
+      .format("csv")
+      .option("checkpointLocation", errorCheckpointLocation)
+      .option("path", errorLocation)
+      .start()
+
+    spark.streams.awaitAnyTermination()
 
   }
 }
