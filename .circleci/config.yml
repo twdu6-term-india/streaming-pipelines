@@ -74,13 +74,6 @@ workflows:
 
 
   hourly-test:
-    triggers:
-      - schedule:
-          cron: "0 * * * *"
-          filters:
-            branches:
-              only:
-                - master
     jobs:
       - e2e
 
