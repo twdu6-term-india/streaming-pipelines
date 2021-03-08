@@ -3,10 +3,12 @@ package com.tw.apps
 import StationDataTransformation._
 import org.apache.curator.framework.CuratorFrameworkFactory
 import org.apache.curator.retry.ExponentialBackoffRetry
-import org.apache.spark.sql.functions.{current_date, date_format}
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.functions.{col, current_date, date_format}
+import org.apache.spark.sql.{Column, DataFrame, SparkSession}
 
 object StationApp {
+
+  def col(str: String): Column = ???
 
   def main(args: Array[String]): Unit = {
 
@@ -51,22 +53,23 @@ object StationApp {
       .union(marseilleStationDF)
       .as[StationData]
 
-    aggregatedStreams
-      .filter(x => x.isValid)
-      .groupByKey(r => r.station_id)
-      .reduceGroups((r1, r2) => if (r1.last_updated > r2.last_updated) r1 else r2)
-      .map(_._2)
-      .writeStream
-      .format("overwriteCSV")
-      .outputMode("complete")
-      .option("header", true)
-      .option("truncate", false)
-      .option("checkpointLocation", checkpointLocation)
-      .option("path", outputLocation)
-      .start()
+        aggregatedStreams
+          .filter(x => x.isValid)
+          .groupByKey(r => r.station_id)
+          .reduceGroups((r1, r2) => if (r1.last_updated > r2.last_updated) r1 else r2)
+          .map(_._2)
+          .writeStream
+          .format("overwriteCSV")
+          .outputMode("complete")
+          .option("header", true)
+          .option("truncate", false)
+          .option("checkpointLocation", checkpointLocation)
+          .option("path", outputLocation)
+          .start()
 
     aggregatedStreams
       .filter(x => !x.isValid)
+      .map(x => x.getStationDataWithError)
       .withColumn("date", date_format(current_date(), "yyyy-MM-dd"))
       .writeStream
       .partitionBy("date")
