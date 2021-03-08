@@ -13,7 +13,6 @@ case class StationData(
                       ) {
 
 
-
   def isValid: Boolean = {
     (!bikes_available.isEmpty && bikes_available.get > 0) &&
       (!docks_available.isEmpty && docks_available.get > 0) &&
@@ -40,23 +39,13 @@ case class StationData(
   private def constructErrorMessage: String = {
     var error = ""
 
-    if(bikes_available.isEmpty || bikes_available.get < 0)
-          error += "Invalid Bikes Available\n"
+    if (bikes_available.isEmpty || bikes_available.get < 0) error += "Invalid Bike Available"
+    if (docks_available.isEmpty || docks_available.get < 0) error += "  | Invalid Docks Available"
+    if (station_id.isEmpty) error += "  | Invalid Station Id"
+    if (name.isEmpty) error += "  | Invalid Name"
+    if (latitude.isEmpty) error += "  | Invalid Latitude"
+    if (longitude.isEmpty) error += " |  Invalid Longitude"
 
-    if(docks_available.isEmpty || docks_available.get < 0)
-          error += "Invalid Docks Available\n"
-
-    if(station_id.isEmpty)
-          error += "Invalid Station Id\n"
-
-    if(name.isEmpty)
-          error += "Invalid Name\n"
-
-    if(latitude.isEmpty)
-          error += "Invalid Latitude\n"
-
-    if(longitude.isEmpty)
-          error += "Invalid Longitude\n"
     error
   }
 

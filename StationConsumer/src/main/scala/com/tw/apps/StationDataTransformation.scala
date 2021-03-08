@@ -41,7 +41,7 @@ object StationDataTransformation {
     stations.asInstanceOf[Seq[Map[String, Any]]]
       .map(x => {
         StationData(
-          extractIntValueSafelyTest(x, "free_bikes"),
+          extractIntValueSafely(x, "free_bikes"),
           extractIntValueSafely(x, "empty_slots"),
           extractBooleanValueSafely(x("extra").asInstanceOf[Map[String, Any]], "renting"),
           extractBooleanValueSafely(x("extra").asInstanceOf[Map[String, Any]], "returning"),
@@ -60,13 +60,13 @@ object StationDataTransformation {
     None
   }
 
-  private def extractIntValueSafelyTest(data: Map[String, Any], key: String): Option[Integer] = {
-    val dd = new scala.util.Random(1000)
-    val value = dd.nextInt()
-    if (value % 2 == 0)
-      return Some(value)
-    None
-  }
+//  private def extractIntValueSafelyTest(data: Map[String, Any], key: String): Option[Integer] = {
+//    val dd = new scala.util.Random(1000)
+//    val value = dd.nextInt()
+//    if (value % 2 == 0)
+//      return Some(value)
+//    None
+//  }
 
   private def extractIntValueSafely(data: Map[String, Any], key: String): Option[Integer] = {
     if (data.contains(key) && data(key).isInstanceOf[Double])
@@ -75,15 +75,8 @@ object StationDataTransformation {
   }
 
   private def extractDoubleValueSafely(data: Map[String, Any], key: String): Option[Double] = {
-    if(key == "latitude") {
-      val dd = new scala.util.Random(1000)
-      val value = dd.nextInt()
-      if (value % 2 == 0)
-        return Some(value.toDouble)
-    } else {
-      if (data.contains(key) && data(key).isInstanceOf[Double])
-        return Some(data(key).asInstanceOf[Double])
-    }
+    if (data.contains(key) && data(key).isInstanceOf[Double])
+      return Some(data(key).asInstanceOf[Double])
     None
   }
 
