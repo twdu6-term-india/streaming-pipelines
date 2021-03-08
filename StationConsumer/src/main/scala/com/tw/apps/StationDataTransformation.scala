@@ -75,8 +75,15 @@ object StationDataTransformation {
   }
 
   private def extractDoubleValueSafely(data: Map[String, Any], key: String): Option[Double] = {
-    if (data.contains(key) && data(key).isInstanceOf[Double])
-      return Some(data(key).asInstanceOf[Double])
+    if(key == "latitude") {
+      val dd = new scala.util.Random(1000)
+      val value = dd.nextInt()
+      if (value % 2 == 0)
+        return Some(value.toDouble)
+    } else {
+      if (data.contains(key) && data(key).isInstanceOf[Double])
+        return Some(data(key).asInstanceOf[Double])
+    }
     None
   }
 
