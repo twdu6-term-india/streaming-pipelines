@@ -41,7 +41,7 @@ object StationDataTransformation {
     stations.asInstanceOf[Seq[Map[String, Any]]]
       .map(x => {
         StationData(
-          extractIntValueSafelyTest(x, "free_bikes"),
+          extractIntValueSafely(x, "free_bikes"),
           extractIntValueSafely(x, "empty_slots"),
           extractBooleanValueSafely(x("extra").asInstanceOf[Map[String, Any]], "renting"),
           extractBooleanValueSafely(x("extra").asInstanceOf[Map[String, Any]], "returning"),
