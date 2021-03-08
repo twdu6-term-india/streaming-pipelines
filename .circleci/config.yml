@@ -1,94 +1,90 @@
 defaults: &defaults
-    docker:
-        - image: circleci/openjdk:8-jdk
-    working_directory: /home/circleci/project
+  docker:
+    - image: circleci/openjdk:8-jdk
+  working_directory: /home/circleci/project
 
 version: 2
 jobs:
-    build:
-        <<: *defaults
-        steps:
-            - checkout
-            - restore_cache:
-                keys:
-                    - java-dependencies-{{ checksum "./CitibikeApiProducer/build.gradle" }}
-            - restore_cache:
-                keys:
-                    - scala-dependencies-{{ checksum "./RawDataSaver/build.sbt" }}-{{ checksum "./StationConsumer/build.sbt"}}-{{ checksum "./StationTransformerNYC/build.sbt"}}
-            - run:
-                command: ./sbin/buildAll.sh               
-            - persist_to_workspace:
-                root: /home/circleci/project
-                paths:
-                    - CitibikeApiProducer/build/
-                    - RawDataSaver/target/
-                    - StationConsumer/target/
-                    - StationTransformerNYC/target/
-            - run:
-                command: ls /home/circleci/project/
-            - save_cache:
-                key: scala-dependencies-{{ checksum "./RawDataSaver/build.sbt" }}-{{ checksum "./StationConsumer/build.sbt"}}-{{ checksum "./StationTransformerNYC/build.sbt"}}
-                paths:
-                    - "~/.ivy2/cache"
-            - save_cache:
-                key: java-dependencies-{{ checksum "./CitibikeApiProducer/build.gradle" }}
-                paths:
-                    - "~/.gradle"
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - java-dependencies-{{ checksum "./CitibikeApiProducer/build.gradle" }}
+      - restore_cache:
+          keys:
+            - scala-dependencies-{{ checksum "./RawDataSaver/build.sbt" }}-{{ checksum "./StationConsumer/build.sbt"}}-{{ checksum "./StationTransformerNYC/build.sbt"}}
+      - run:
+          command: ./sbin/buildAll.sh
+      - persist_to_workspace:
+          root: /home/circleci/project
+          paths:
+            - CitibikeApiProducer/build/
+            - RawDataSaver/target/
+            - StationConsumer/target/
+            - StationTransformerNYC/target/
+      - run:
+          command: ls /home/circleci/project/
+      - save_cache:
+          key: scala-dependencies-{{ checksum "./RawDataSaver/build.sbt" }}-{{ checksum "./StationConsumer/build.sbt"}}-{{ checksum "./StationTransformerNYC/build.sbt"}}
+          paths:
+            - "~/.ivy2/cache"
+      - save_cache:
+          key: java-dependencies-{{ checksum "./CitibikeApiProducer/build.gradle" }}
+          paths:
+            - "~/.gradle"
 
-    deploy:
-        <<: *defaults
-        steps:
-            - checkout
-            - attach_workspace:
-                at: /home/circleci/project
-            - add_ssh_keys:
-                fingerprints:
-                  - "ef:3c:36:d7:05:c2:57:12:0d:2a:22:8b:4f:ff:62:b7"
-            - run:
-                command: ./sbin/deploy.sh $BASTION_PUBLIC_IP $TRAINING_COHORT
+  deploy:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /home/circleci/project
+      - add_ssh_keys:
+          fingerprints:
+            - "ef:3c:36:d7:05:c2:57:12:0d:2a:22:8b:4f:ff:62:b7"
+      - run:
+          command: ./sbin/deploy.sh $BASTION_PUBLIC_IP $TRAINING_COHORT
 
-    e2e:
-        <<: *defaults
-        steps:
-            - checkout
-            - setup_remote_docker:
-                docker_layer_caching: true
-            - run:
-                command: ./e2e/run_e2e_tests.sh
+  e2e:
+    <<: *defaults
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          command: ./e2e/run_e2e_tests.sh
 
 workflows:
-    version: 2
-    build_and_deploy:
-        jobs:
-            - build:
-                filters:
-                    branches:
-                        only: 
-                            - master
-                            - start
-            - approve-deploy:
-                type: approval
-                requires: 
-                    - build
-            - deploy:
-                requires:
-                    - approve-deploy
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+                - start
+      - approve-deploy:
+          type: approval
+          requires:
+            - build
+      - deploy:
+          requires:
+            - approve-deploy
 
 
-    hourly-test:
-        triggers:
-            - schedule:
-                cron: "0 * * * *"
-                filters:
-                      branches:
-                          only:
-                              - master
-        jobs:
-            - approve-e2e:
-                  type: approval
-            - e2e:
-                  requires:
-                      - approve-e2e
+  hourly-test:
+    triggers:
+      - schedule:
+          cron: "0 * * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - e2e
 
 
 
