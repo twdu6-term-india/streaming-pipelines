@@ -145,6 +145,23 @@ services:
       - streaming-data-e2e
     restart: on-failure
 
+  raw-station-data-marseille-saver:
+    build:
+      context: ../RawDataSaver
+      dockerfile: Dockerfile-station-data-Marseille
+    depends_on:
+      - kafka
+      - station-marseille-producer
+      - hadoop-seed
+      - zookeeper-seed
+    volumes:
+      - ~/.ivy2:/root/.ivy2:rw
+    networks:
+      - streaming-data-e2e
+    restart: on-failure
+    ports:
+      - "4046:4040"
+
   station-consumer:
     build:
       context: ../StationConsumer
