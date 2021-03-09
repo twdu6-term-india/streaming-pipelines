@@ -52,7 +52,7 @@ class StationDataTest extends FeatureSpec with Matchers with GivenWhenThen {
       )
 
       val stationDataWithError = stationData.getStationDataWithError
-      stationDataWithError.error should be("Invalid Bikes Available\n")
+      stationDataWithError.error should be("Invalid Bikes Available")
     }
 
     scenario("StationData with error column when having multiple invalid input") {
@@ -70,10 +70,7 @@ class StationDataTest extends FeatureSpec with Matchers with GivenWhenThen {
 
       val stationDataWithError = stationData.getStationDataWithError
       val expectedErrorMessage =
-        """Invalid Bikes Available
-           |Invalid Station Id
-           |Invalid Latitude
-           |""".stripMargin
+        """Invalid Bikes Available  | Invalid Station Id  | Invalid Latitude""".stripMargin
       stationDataWithError.error should be(expectedErrorMessage)
     }
   }

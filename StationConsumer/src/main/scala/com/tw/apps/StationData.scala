@@ -39,7 +39,7 @@ case class StationData(
   private def constructErrorMessage: String = {
     var error = ""
 
-    if (bikes_available.isEmpty || bikes_available.get < 0) error += "Invalid Bike Available"
+    if (bikes_available.isEmpty || bikes_available.get < 0) error += "Invalid Bikes Available"
     if (docks_available.isEmpty || docks_available.get < 0) error += "  | Invalid Docks Available"
     if (station_id.isEmpty) error += "  | Invalid Station Id"
     if (name.isEmpty) error += "  | Invalid Name"
