@@ -34,7 +34,7 @@ class EndToEndSpec extends FeatureSpec with Matchers with GivenWhenThen {
         .option("header", "true")
         .option("inferSchema", "true")
         .load("hdfs://hadoop:9000" + tempStationMartLocation)
-      actualDF.printSchema()
+
       import spark.implicits._
 
       val expectedDF = Seq(
@@ -51,6 +51,31 @@ class EndToEndSpec extends FeatureSpec with Matchers with GivenWhenThen {
 
       actualDF.collect() should contain theSameElementsAs (expectedDF.collect())
       actualDF.columns should contain theSameElementsAs (expectedDF.columns)
+
+    }
+
+    scenario("should write incorrect station data to error path") {
+
+      val actualErrorDF = spark.read
+        .format("csv")
+        .option("header", "true")
+        .option("inferSchema", "true")
+        .load("hdfs://hadoop:9000/tw/error/stationMart/data").dropDuplicates("station_id")
+
+
+      import spark.implicits._
+
+      val expectedErrorDF = Seq((null, 2, true, true, 1614257973, "france-station-2", "9207- TEISSEIRE - ROUBAUD",
+        43.27252367086013, 5.399686062414487, "Invalid Bikes Available", "2021-03-09"))
+        .toDF("bikes_available", "docks_available", "is_renting", "is_returning", "last_updated", "station_id",
+          "name", "latitude", "longitude", "error", "date")
+
+
+      Then("csv file in error path should contain only the invalid records")
+
+      actualErrorDF.collect() should contain theSameElementsAs (expectedErrorDF.collect())
+      actualErrorDF.columns should contain theSameElementsAs (expectedErrorDF.columns)
+
 
     }
 
