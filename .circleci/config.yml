@@ -47,12 +47,6 @@ jobs:
       - run:
           command: ./sbin/deploy.sh $BASTION_PUBLIC_IP $TRAINING_COHORT
 
-  e2e:
-    <<: *defaults
-    steps:
-      - checkout
-      - run:
-          command: ./e2e/run_e2e_tests.sh
 
 workflows:
   version: 2
@@ -72,10 +66,6 @@ workflows:
           requires:
             - approve-deploy
 
-
-  hourly-test:
-    jobs:
-      - e2e
 
 
 
