@@ -1,6 +1,7 @@
 package com.tw.apps
 
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions.col
 import org.scalatest._
 
 class EndToEndSpec extends FeatureSpec with Matchers with GivenWhenThen {
@@ -69,6 +70,7 @@ class EndToEndSpec extends FeatureSpec with Matchers with GivenWhenThen {
         43.27252367086013, 5.399686062414487, "Invalid Bikes Available", "2021-03-09"))
         .toDF("bikes_available", "docks_available", "is_renting", "is_returning", "last_updated", "station_id",
           "name", "latitude", "longitude", "error", "date")
+        .withColumn("date", col("date").cast("date"))
 
 
       Then("csv file in error path should contain only the invalid records")
