@@ -46,27 +46,31 @@ object StationDataTransformation {
           extractBooleanValueSafely(x("extra").asInstanceOf[Map[String, Any]], "renting"),
           extractBooleanValueSafely(x("extra").asInstanceOf[Map[String, Any]], "returning"),
           Instant.from(DateTimeFormatter.ISO_INSTANT.parse(x("timestamp").asInstanceOf[String])).getEpochSecond,
-          extractStringValueSafely(x, "id"),
-          extractStringValueSafely(x, "name"),
-          extractDoubleValueSafely(x, "latitude"),
-          extractDoubleValueSafely(x, "longitude")
+          extractValueSafely(x, "id"),
+          extractValueSafely(x, "name"),
+          extractValueSafely(x, "latitude"),
+          extractValueSafely(x, "longitude")
         )
       })
   }
+  //  private def extractStringValueSafely(data: Map[String, Any], key: String): Option[String] = {
+  //    if (data.contains(key) && data(key).isInstanceOf[String])
+  //      return Some(data(key).asInstanceOf[String])
+  //    None
+  //  }
 
-  private def extractStringValueSafely(data: Map[String, Any], key: String): Option[String] = {
-    if (data.contains(key) && data(key).isInstanceOf[String])
-      return Some(data(key).asInstanceOf[String])
-    None
-  }
-
-//  private def extractIntValueSafelyTest(data: Map[String, Any], key: String): Option[Integer] = {
-//    val dd = new scala.util.Random(1000)
-//    val value = dd.nextInt()
-//    if (value % 2 == 0)
-//      return Some(value)
-//    None
-//  }
+  //  private def extractDoubleValueSafely(data: Map[String, Any], key: String): Option[Double] = {
+  //    if (data.contains(key) && data(key).isInstanceOf[Double])
+  //      return Some(data(key).asInstanceOf[Double])
+  //    None
+  //  }
+  //  private def extractIntValueSafelyTest(data: Map[String, Any], key: String): Option[Integer] = {
+  //    val dd = new scala.util.Random(1000)
+  //    val value = dd.nextInt()
+  //    if (value % 2 == 0)
+  //      return Some(value)
+  //    None
+  //  }
 
   private def extractIntValueSafely(data: Map[String, Any], key: String): Option[Integer] = {
     if (data.contains(key) && data(key).isInstanceOf[Double])
@@ -74,9 +78,9 @@ object StationDataTransformation {
     None
   }
 
-  private def extractDoubleValueSafely(data: Map[String, Any], key: String): Option[Double] = {
-    if (data.contains(key) && data(key).isInstanceOf[Double])
-      return Some(data(key).asInstanceOf[Double])
+  private def extractValueSafely[T](data: Map[String, Any], key: String): Option[T] = {
+    if (data.contains(key) && data(key).isInstanceOf[T])
+      return Some(data(key).asInstanceOf[T])
     None
   }
 
@@ -86,5 +90,4 @@ object StationDataTransformation {
 
     true
   }
-
 }

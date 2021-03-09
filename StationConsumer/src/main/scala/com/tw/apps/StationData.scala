@@ -14,8 +14,8 @@ case class StationData(
 
 
   def isValid: Boolean = {
-    (!bikes_available.isEmpty && bikes_available.get > 0) &&
-      (!docks_available.isEmpty && docks_available.get > 0) &&
+    (!bikes_available.isEmpty && bikes_available.get >= 0) &&
+      (!docks_available.isEmpty && docks_available.get >= 0) &&
       !latitude.isEmpty &&
       !longitude.isEmpty &&
       !station_id.isEmpty &&
